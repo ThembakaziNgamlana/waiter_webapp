@@ -1,0 +1,27 @@
+<!-- views/login.handlebars -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="/waiter.css">
+    <title>Login</title>
+</head>
+<body>
+    <form action="/login" method="post">
+        <div class="login-container">
+            <h1>Login</h1>
+            <label for="role">Select Role:</label>
+            <select id="role" name="role">
+                <option value="admin">Admin</option>
+                <option value="waiter">Waiter</option>
+            </select>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </div> 
+    </form>
+</body>
+</html>
