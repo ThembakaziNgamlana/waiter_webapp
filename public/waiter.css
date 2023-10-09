@@ -8,19 +8,17 @@ body{
 }
 .container {
     text-align: center;
-    background-color: lightcoral;
-    padding-bottom: 150px;
+    background-color: white;
+    padding: 20px; /* Adjust the padding to control the size of the container */
     margin-right: 50px;
     margin-left: 200px;
-    color: white;
+    color: black;
 }
 
-
 .the_list li {
-    text-align: center; /* Adjust list item text alignment */
+    text-align: center;
     margin-bottom: 10px;
     margin-right: 50px;
-     /* Add some vertical spacing between list items */
 }
 
 
