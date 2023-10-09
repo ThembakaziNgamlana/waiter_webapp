@@ -20,6 +20,7 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
 // Redirect from root URL to /waiter
 app.get('/', (req, res) => {
     res.redirect('/waiter');
@@ -32,11 +33,6 @@ app.get('/waiter', (req, res) => {
 
 // Handle form submission
 app.post('/waiter', (req, res) => {
-    // Handle login logic here, including validation and authentication
-    // Example: You can access form data using req.body.role, req.body.username, and req.body.password
-    // Check credentials and perform login actions
-
-    // Redirect to a dashboard or another page upon successful login
     res.redirect('/dashboard');
 });
 
