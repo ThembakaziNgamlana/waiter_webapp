@@ -2,10 +2,10 @@
 <html>
 <head>
   <title>{{title}}</title>
-  <link rel="stylesheet" href="/Sipho.css">
+  <link rel="stylesheet" href="/Schedule.css">
 </head>
 <body>
-  <h2>Welcome, Sipho!</h2>
+  <h2>Welcome, {{waiterName}}!</h2>
 
   <h3>Your Current Schedule:</h3>
   {{#each schedule}}
@@ -13,7 +13,7 @@
   {{/each}}
 
   <h3>Select Available Days:</h3>
-  <form action="/waiter/update/Sipho" method="post">
+  <form action="/waiter/update/waitersSchedule" method="post">
     <div>
         <label for="day1">Monday</label>
         <input type="checkbox" id="day1" name="days[]" value="Monday">
@@ -50,7 +50,7 @@
     </div>
 
     <div>
-        <button type="submit">Update Schedule</button>
+        <button type="submit">Submit Schedule</button>
     </div>
 </form>
 

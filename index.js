@@ -37,50 +37,15 @@ app.post('/waiter', (req, res) => {
 });
 
 // Define a route for waiter schedules
-app.get('/waiter/Thembi', (req, res) => {
-    // Render the Thembi's page
-    res.render('thembi', {
-      title: 'Welcome, Thembi!',
-      schedule: [
-        'Monday: Morning shift',
-        'Wednesday: Evening shift',
-        'Thursday: Evening shift',
-        'Friday: Day off',
-        'Tuesday: Day off',
-      ],
-    });
-  });
-  app.get('/waiter/Angel', (req, res) => {
-    // Render the Thembi's page
-    res.render('Angel', {
-      title: 'Welcome, Angel!',
-      schedule: [
-        'Tuesday: Morning shift',
-        'Saturday: Evening shift',
-        'Friday: Evening shift',
-        'Sunday: Day off',
-        'Monday: Day off',
-        'Wensday: Day off',
-        'Thursday: Day off',
-      ],
-    });
-  });
-  app.get('/waiter/Sipho', (req, res) => {
-    // Render the Thembi's page
-    res.render('Sipho', {
-      title: 'Welcome, Sipho!',
-      schedule: [
-        'Friday: Morning shift',
-        'Wednesday: Evening shift',
-        'Monday: Evening shift',
-        'Tuesady: Day off',
-        'Saturday: Day off',
-        'Sunday: Day off',
-        'Thursday: Day off',
-      ],
-    });
-  });
-
+app.get('/waiter/:waiterName', (req, res) => {
+  const waiterName = req.params.waiterName;
+  // Render the waiter's schedule page with the name as a parameter
+  res.render('waitersSchedule', {
+    title: `Welcome, ${waiterName}!`,
+    waiterName: waiterName, // Pass the waiterName to the template
+});
+});
+  
 app.post('/waiter/update/:waiterName', (req, res) => {
     const waiterName = req.params.waiterName;
     const selectedDays = req.body.days; // An array of selected days
