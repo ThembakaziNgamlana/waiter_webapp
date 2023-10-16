@@ -5,48 +5,52 @@
   <link rel="stylesheet" href="/Schedule.css">
 </head>
 <body>
-  <h2>Welcome, {{waiterName}}!</h2>
+  <h2>Welcome, {{waiterName}}</h2>
 
-  <h3>Your Current Schedule:</h3>
-  {{#each schedule}}
-    <p>{{this}}</p>
+
+<h3>Your Schedule:</h3>
+<ul>
+  {{#each selectedDays}}
+    <li>{{this}}</li>
   {{/each}}
+</ul>
+
 
   <h3>Select Available Days:</h3>
-  <form action="/waiter/update/waitersSchedule" method="post">
+  <form action="/waiter/{{waiterName}}/update" method="post">
     <div>
         <label for="day1">Monday</label>
-        <input type="checkbox" id="day1" name="days[]" value="Monday">
+        <input type="checkbox" id="day1" name="days" value="Monday">
     </div>
 
     <div>
         <label for="day2">Tuesday</label>
-        <input type="checkbox" id="day2" name="days[]" value="Tuesday">
+        <input type="checkbox" id="day2" name="days" value="Tuesday">
     </div>
 
     <div>
         <label for="day3">Wednesday</label>
-        <input type="checkbox" id="day3" name="days[]" value="Wednesday">
+        <input type="checkbox" id="day3" name="days" value="Wednesday">
     </div>
 
     <div>
         <label for="day4">Thursday</label>
-        <input type="checkbox" id="day4" name="days[]" value="Thursday">
+        <input type="checkbox" id="day4" name="days" value="Thursday">
     </div>
 
     <div>
         <label for="day5">Friday</label>
-        <input type="checkbox" id="day5" name="days[]" value="Friday">
+        <input type="checkbox" id="day5" name="days" value="Friday">
     </div>
 
     <div>
         <label for="day6">Saturday</label>
-        <input type="checkbox" id="day6" name="days[]" value="Saturday">
+        <input type="checkbox" id="day6" name="days" value="Saturday">
     </div>
 
     <div>
         <label for="day7">Sunday</label>
-        <input type="checkbox" id="day7" name="days[]" value="Sunday">
+        <input type="checkbox" id="day7" name="days" value="Sunday">
     </div>
 
     <div>
