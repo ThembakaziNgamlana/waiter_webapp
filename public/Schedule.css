@@ -4,3 +4,16 @@ body{
     background-repeat: no-repeat;
     color:white
 }
+
+.error-message{
+ color:red;
+}
+
+/* .successMessage{
+    color:green;
+} */
+
+.successMessage{
+    color: green;
+
+}

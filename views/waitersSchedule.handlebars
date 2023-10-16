@@ -18,6 +18,21 @@
 
   <h3>Select Available Days:</h3>
   <form action="/waiter/{{waiterName}}/update" method="post">
+   <div class="error-message">{{errorMessage}}
+      <script>
+                setTimeout(function () {
+                    document.querySelector(".error-message").remove();
+                }, 3000)
+            </script>
+   </div>
+  <div class="successMessage">{{successMessage}}
+      <script>
+                setTimeout(function () {
+                    document.querySelector(".successMessage").remove();
+                }, 3000)
+            </script>
+            
+  </div>
     <div>
         <label for="day1">Monday</label>
         <input type="checkbox" id="day1" name="days" value="Monday">

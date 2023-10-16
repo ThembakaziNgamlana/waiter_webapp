@@ -66,13 +66,37 @@ app.get('/waiter/:waiterName/update', async (req, res) => {
     });
 });
 app.post('/waiter/:waiterName/update', async (req, res) => {
-    let waiterName = req.params.waiterName;
-    let selectedDays = req.body.days; // Obtain selected days from the request
-   
-        await createWaiterDB.insertWaiter(waiterName,selectedDays);
+  const waiterName = req.params.waiterName;
+  let selectedDays = req.body.days; // Obtain selected days from the request
+
+  // Perform validation: Ensure that the number of selected days is between 3 and 5.
+  if (selectedDays.length < 3 || selectedDays.length > 5) {
+    const errorMessage = 'Please select between 3 and 5 days.';
     
-    res.redirect(`/waiter/${waiterName}/update`);
+    // Render the form with the error message.
+    res.render('waitersSchedule', {
+      waiterName: waiterName,
+      title: `Schedule for ${waiterName}`,
+      selectedDays: [],
+      errorMessage: errorMessage,
+    });
+  } else {
+    // Validation passed, insert the selected days into the database.
+    await createWaiterDB.insertWaiter(waiterName, selectedDays);
+    
+    // Set a success message.
+    const successMessage = 'You have successfully selected your working days.';
+
+    // Render the form with the success message.
+    res.render('waitersSchedule', {
+      waiterName: waiterName,
+      title: `Schedule for ${waiterName}`,
+      selectedDays: selectedDays,
+      successMessage: successMessage,
+    });
+  }
 });
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
