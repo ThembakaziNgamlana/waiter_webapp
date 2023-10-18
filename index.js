@@ -14,6 +14,16 @@ const handlebars = exphbs.create({
     extname: '.handlebars',
     defaultLayout: false,
     layoutDir: './views/layouts',
+    helpers: {
+      inArray: function (value, array) {
+          // Check if array is defined and is an array
+          if (Array.isArray(array)) {
+              return array.includes(value);
+          }
+          // Handle the case where array is not defined or not an array
+          return false;
+      }
+  }  
 });
 
 const pgp = pgPromise();
@@ -56,7 +66,7 @@ app.get('/waiter/:waiterName/update', async (req, res) => {
     const waiterName = req.params.waiterName
     const selectedDays = await createWaiterDB.getSelectedDays(waiterName);
 
-
+    console.log('Selected Days:', selectedDays);
     // Render a template to display the selected days
     res.render('waitersSchedule', {
         waiterName:waiterName,
@@ -76,7 +86,7 @@ app.post('/waiter/:waiterName/update', async (req, res) => {
     res.render('waitersSchedule', {
       waiterName: waiterName,
       title: `Schedule for ${waiterName}`,
-      selectedDays: [],
+      selectedDays:selectedDays,
       errorMessage: errorMessage,
     });
   } else {
@@ -84,7 +94,7 @@ app.post('/waiter/:waiterName/update', async (req, res) => {
     await createWaiterDB.insertWaiter(waiterName, selectedDays);
     
     // Set a success message.
-    const successMessage = 'You have successfully selected your working days.';
+    const successMessage = 'You have successfully updated your working days .';
 
     // Render the form with the success message.
     res.render('waitersSchedule', {
