@@ -1,0 +1,17 @@
+table {
+    border-collapse: collapse;
+    width: 50%;
+    margin: 20px auto;
+}
+
+th, td {
+    border: 1px solid black;
+    text-align: center;
+    padding: 8px;
+}
+
+#resetButton {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+}

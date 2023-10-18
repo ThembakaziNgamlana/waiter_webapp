@@ -7,7 +7,6 @@ import createWaiterAvailabilityDB from './waiter_Avabilitydb.js';
 
 
 
-
 const app = express();
 app.use(session({ secret: 'your-secret-key', resave: false, saveUninitialized: true }));
 
@@ -95,7 +94,33 @@ app.post('/waiter/:waiterName/update', async (req, res) => {
       successMessage: successMessage,
     });
   }
+})
+// // Define a route for the admin feedback page
+app.get('/admin-feedback', (req, res) => {
+    res.render('admin-feedback', {
+        title: 'Admin Feedback Page',
+       });
 });
+
+app.get('/admin-feedback', async (req, res) => {
+
+    const assignments = await createWaiterDB.insertWaiterAssignment();
+  console.log(assignments)
+
+    res.render('admin-feedback',{assignments});
+
+
+});
+
+
+app.post('/admin-feedback/reset-schedule', async (req, res) => {
+  // Clear the schedule table in the database
+  await createWaiterDB.clearScheduleTable();
+
+  // Redirect back to the admin screen
+  res.redirect('/admin-feedback');
+});
+
 
 
 const PORT = process.env.PORT || 3000;

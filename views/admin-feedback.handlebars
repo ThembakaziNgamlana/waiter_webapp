@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="admin.css">
+</head>
+<body>
+
+ 
+
+
+    <table>
+        {{#each waiterAssignments}}
+        <tr>
+            <th>Day</th>
+            <th>WaiterName{{this.waiterAssignment}}s</th>
+            
+        </tr>
+          {{/each}}   
+        <tr>
+            <td>Monday</td>
+            <td id="monday"></td>
+        </tr>
+        <tr>
+            <td>Tuesday</td>
+            <td id="tuesday"></td>
+        </tr>
+        <tr>
+            <td>Wednesday</td>
+            <td id="wednesday"></td>
+        </tr>
+        <tr>
+            <td>Thursday</td>
+            <td id="thursday"></td>
+        </tr>
+        <tr>
+            <td>Friday</td>
+            <td id="friday"></td>
+        </tr>
+     
+    </table>
+    
+    <form action="/days/reset-schedule" method="post">
+        <button type="submit">Reset Schedule</button>
+    </form>
+    
+</body>
+</html>
+
+    
+       
