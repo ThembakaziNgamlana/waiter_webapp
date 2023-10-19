@@ -4,46 +4,38 @@
     <link rel="stylesheet" type="text/css" href="admin.css">
 </head>
 <body>
-
- 
-
-
     <table>
-        {{!-- {{#each waiterAssignments}} --}}
         <tr>
             <th>Day</th>
             <th>WaiterName</th>
-            
-        </tr>  
+        </tr>
         <tr>
             <td>Monday</td>
-            <td id="monday"></td>
+            <td id="monday">{{waiterAssignments.Monday}}</td>
         </tr>
         <tr>
             <td>Tuesday</td>
-            <td id="tuesday"></td>
+            <td id="tuesday">{{waiterAssignments.Tuesday}}</td>
         </tr>
         <tr>
             <td>Wednesday</td>
-            <td id="wednesday"></td>
+            <td id="wednesday">{{waiterAssignments.Wednesday}}</td>
         </tr>
         <tr>
             <td>Thursday</td>
-            <td id="thursday"></td>
+            <td id="thursday">{{waiterAssignments.Thursday}}</td>
         </tr>
         <tr>
             <td>Friday</td>
-            <td id="friday"></td>
+            <td id="friday">{{waiterAssignments.Friday}}</td>
         </tr>
-     
     </table>
-    
-    <form action="/days/reset-schedule" method="post">
+    <form action="/admin-feedback/reset-schedule" method="post">
         <button type="submit">Reset Schedule</button>
     </form>
-    
 </body>
 </html>
+
 
     
        

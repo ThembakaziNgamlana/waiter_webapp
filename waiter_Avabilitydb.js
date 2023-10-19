@@ -79,27 +79,65 @@ export default function createWaiterAvailabilityDB(db) {
 
       return [];
   }
-
-  // Function to insert a waiter assignment for a specific day
-  async function insertWaiterAssignment() {
-    const waiter = await db.manyOrNone('SELECT waiters.waiter_name, selected_days.day_name FROM waiters JOIN waiter_schedule ON waiters.waiter_id = waiter_schedule.waiter_id JOIN selected_days ON waiter_schedule.selected_day_id = selected_days.selected_day_id');
-    console.log(waiter)
-     const  waiterAvailability = {};
- 
-     for (const waiterSchedule of waiter){
-      const {waiter_name , selected_days} = waiterSchedule;
-
-     if (!waiterAvailability[selected_days]) {
-        waiterAvailability[selected_days] = {waiters: []};
-        if (!waiterAvailability[day_name].waiters.includes(waiter_name)) {
-          waiterAvailability[day_name].waiters.push(waiter_name);
-        }
-
-     }
-   
-    }
-    return waiterAvailability
+  async function allAssigments(){
+    const assignments = await db.manyOrNone('SELECT waiters.waiter_name, selected_days.day_name FROM waiters JOIN waiter_schedule ON waiters.waiter_id = waiter_schedule.waiter_id JOIN "selected_days" ON waiter_schedule.selected_day_id = "selected_days".selected_day_id;');
+   return assignments
   }
+
+
+
+
+  //Function to insert a waiter assignment for a specific day
+  async function insertWaiterAssignment() {
+    const waiterSchedule = await allAssigments()
+
+    
+    const waiterAvailability = {};
+  
+    for (const assignment of waiterSchedule) {
+      const { day_name, waiter_name } = assignment;
+  
+      if (!waiterAvailability[day_name]) {
+        waiterAvailability[day_name] = { waiters: [] };
+      }
+  
+    waiterAvailability[day_name].waiters.push(waiter_name);
+    
+    }
+  
+    return waiterAvailability;
+
+  }
+
+  // async function insertWaiterAssignment() {
+  //   const assignments = await db.manyOrNone('SELECT waiters.waiter_name, selected_days.day_name FROM waiters JOIN waiter_schedule ON waiters.waiter_id = waiter_schedule.waiter_id JOIN selected_days ON waiter_schedule.selected_day_id = selected_days.selected_day_id');
+  //   console.log(assignments);
+  
+  //   // Check if assignments is an array before proceeding
+  //   if (Array.isArray(assignments)) {
+  //     const waiterAvailability = {};
+  
+  //     for (const assignment of assignments) {
+  //       const { day_name, waiter_name } = assignment;
+  
+  //       if (!waiterAvailability[day_name]) {
+  //         waiterAvailability[day_name] = { waiters: [] };
+  //       }
+  
+  //       if (!waiterAvailability[day_name].waiters.includes(waiter_name)) {
+  //         waiterAvailability[day_name].waiters.push(waiter_name);
+  //       }
+  //     }
+  
+  //     return waiterAvailability;
+  //   } else {
+  //     return {}; // Return an empty object when there are no assignments
+  //   }
+  // }
+  
+  
+  
+
   async function clearScheduleTable() {
     // Execute the SQL query to clear the waiter_schedule table
     await db.none('DELETE FROM waiter_schedule');
@@ -115,6 +153,7 @@ export default function createWaiterAvailabilityDB(db) {
       getAllWaiterAssignments,
       insertWaiter,
       getSelectedDays,
-      clearScheduleTable
+      clearScheduleTable,
+      allAssigments
   };
 }
