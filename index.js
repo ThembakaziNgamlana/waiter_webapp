@@ -105,43 +105,23 @@ app.post('/waiter/:waiterName/update', async (req, res) => {
     });
   }
 })
-// Define a route for the admin feedback page
 app.get('/admin-feedback', async (req, res) => {
   const assignments = await createWaiterDB.insertWaiterAssignment();
-  console.log(assignments);
 
-  // Create an object with day names as keys and corresponding waiter names as values
-  // const waiterAssignments = {};
-  // for (const assignment of assignments) {
-  //   const { day_name, waiter_name } = assignment;
-  //   waiterAssignments[day_name] = waiter_name;
-  // }
+  // Make sure you have assignments before proceeding
+  if (assignments) {
+    const waiterAssignments = {};
 
-  res.render('admin-feedback', { assignments, title: 'Admin Feedback Page' });
+    for (const day in assignments) {
+      waiterAssignments[day] = assignments[day].waiters;
+    }
+
+    res.render('admin-feedback', { waiterAssignments, title: 'Admin Feedback Page' });
+  } else {
+    // Handle the case where there are no assignments (empty result)
+    res.render('admin-feedback', { waiterAssignments: {}, title: 'Admin Feedback Page' });
+  }
 });
-// app.get('/admin-feedback', async (req, res) => {
-//   const assignments = await createWaiterDB.insertWaiterAssignment();
-//   console.log(assignments);
-
-//   if (Array.isArray(assignments)) {
-//     const waiterAssignments = assignments.reduce((result, assignment) => {
-//       const { day_name, waiter_name } = assignment;
-//       if (!result[day_name]) {
-//         result[day_name] = waiter_name;
-//       } else if (Array.isArray(result[day_name])) {
-//         result[day_name].push(waiter_name);
-//       } else {
-//         result[day_name] = [result[day_name], waiter_name];
-//       }
-//       return result;
-//     }, {});
-
-//     res.render('admin-feedback', { waiterAssignments, title: 'Admin Feedback Page' });
-//   } else {
-//     // Handle the case where there are no assignments (empty result)
-//     res.render('admin-feedback', { waiterAssignments: {}, title: 'Admin Feedback Page' });
-//   }
-// });
 
 app.post('/admin-feedback/reset-schedule', async (req, res) => {
   // Clear the schedule table in the database
