@@ -7,12 +7,12 @@ export default function createWaiterAvailabilityDB(db) {
     const waiter = await db.one('SELECT waiter_id FROM waiters WHERE waiter_name = $1', [waiterName]);
 
     // Clear existing selected days for this waiter
-    await db.none('DELETE FROM new_selected_days WHERE waiter_id = $1', [waiter.waiter_id]);
+    await db.none('DELETE FROM new_selected_days WHERE id = $1', [waiter.waiter_id]);
 
     // Insert the selected days for the waiter
-    for (const day of selectedDays) {
-      await db.none('INSERT INTO new_selected_days (waiter_id, days) VALUES ($1, $2)', [waiter.waiter_id, day]);
-    }
+    // for (const day of selectedDays) {
+    //   await db.none('INSERT INTO new_selected_days (id, days) VALUES ($1, $2)', [waiter.waiter_id, day]);
+    // }
   }
   async function insertWaiterAssignment() {
     const assignments = await db.manyOrNone(`
