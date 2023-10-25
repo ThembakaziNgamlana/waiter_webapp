@@ -11,23 +11,53 @@
         </tr>
         <tr>
             <td>Monday</td>
-            <td id="monday">{{waiterAssignments.Monday}}</td>
+            <td>
+                {{#each waiterAssignments}}
+                    {{#if (eq day "Monday")}}
+                        {{this.waiter_name}}
+                    {{/if}}
+                {{/each}}
+            </td>
         </tr>
         <tr>
             <td>Tuesday</td>
-            <td id="tuesday">{{waiterAssignments.Tuesday}}</td>
+            <td>
+                {{#each waiterAssignments}}
+                    {{#if (eq day "Tuesday")}}
+                        {{this.waiter_name}}
+                    {{/if}}
+                {{/each}}
+            </td>
         </tr>
         <tr>
             <td>Wednesday</td>
-            <td id="wednesday">{{waiterAssignments.Wednesday}}</td>
+            <td>
+                {{#each waiterAssignments}}
+                    {{#if (eq day "Wednesday")}}
+                        {{this.waiter_name}}
+                    {{/if}}
+                {{/each}}
+            </td>
         </tr>
         <tr>
             <td>Thursday</td>
-            <td id="thursday">{{waiterAssignments.Thursday}}</td>
+            <td>
+                {{#each waiterAssignments}}
+                    {{#if (eq day "Thursday")}}
+                        {{this.waiter_name}}
+                    {{/if}}
+                {{/each}}
+            </td>
         </tr>
         <tr>
             <td>Friday</td>
-            <td id="friday">{{waiterAssignments.Friday}}</td>
+            <td>
+                {{#each waiterAssignments}}
+                    {{#if (eq day "Friday")}}
+                        {{this.waiter_name}}
+                    {{/if}}
+                {{/each}}
+            </td>
         </tr>
     </table>
     <form action="/admin-feedback/reset-schedule" method="post">
@@ -37,5 +67,3 @@
 </html>
 
 
-    
-       

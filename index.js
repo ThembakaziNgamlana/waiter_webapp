@@ -10,6 +10,12 @@ import createWaiterAvailabilityDB from './waiter_Avabilitydb.js';
 const app = express();
 app.use(session({ secret: 'your-secret-key', resave: false, saveUninitialized: true }));
 
+
+
+
+
+
+
 const handlebars = exphbs.create({
     extname: '.handlebars',
     defaultLayout: false,
@@ -44,7 +50,6 @@ const  createWaiterDB = createWaiterAvailabilityDB(db);
 
 
 
-
 // Redirect from root URL to /waiter
 app.get('/', (req, res) => {
     res.render('waiter');
@@ -76,6 +81,7 @@ app.get('/waiter/:waiterName/update', async (req, res) => {
 });
 app.post('/waiter/:waiterName/update', async (req, res) => {
   const waiterName = req.params.waiterName;
+
   let selectedDays = req.body.days; // Obtain selected days from the request
 
   // Perform validation: Ensure that the number of selected days is between 3 and 5.
@@ -105,31 +111,53 @@ app.post('/waiter/:waiterName/update', async (req, res) => {
     });
   }
 })
+// app.get('/admin-feedback', async (req, res) => {
+//   const day = req.params.day;
+//   const assignments = await createWaiterDB.insertWaiterAssignment();
+//   const waiterNames = await createWaiterAvailabilityDB.getWaiterNameForDay(day);
+
+//   // Make sure you have assignments before proceeding
+//   if (assignments) {
+//     const waiterAssignments = {};
+
+//     for (const day in assignments) {
+//       waiterAssignments[day] = assignments[day].waiters;
+//     }
+
+//     res.render('admin-feedback', { waiterAssignments, title: 'Admin Feedback Page' });
+//   } else {
+//     // Handle the case where there are no assignments (empty result)
+//     res.render('admin-feedback', { waiterAssignments: {}, title: 'Admin Feedback Page' }
+//   ('waiter-names', { waiterNames, day });
+//   }
+// });
 app.get('/admin-feedback', async (req, res) => {
-  const assignments = await createWaiterDB.insertWaiterAssignment();
+  const day = req.query.day; // Get the day from the query parameters
 
-  // Make sure you have assignments before proceeding
-  if (assignments) {
-    const waiterAssignments = {};
+  try {
+    // Retrieve the waiter names for the specified day
+    const waiterNames = await createWaiterDB.getWaiterNamesForDay(day);
 
-    for (const day in assignments) {
-      waiterAssignments[day] = assignments[day].waiters;
-    }
-
-    res.render('admin-feedback', { waiterAssignments, title: 'Admin Feedback Page' });
-  } else {
-    // Handle the case where there are no assignments (empty result)
-    res.render('admin-feedback', { waiterAssignments: {}, title: 'Admin Feedback Page' });
+    // Render the admin-feedback page and pass the waiterNames and day to the view
+    res.render('admin-feedback', {
+      waiterNames,
+      day,
+      title: 'Admin Feedback Page'
+    });
+  } catch (error) {
+    // Handle errors, e.g., by rendering an error page
+    console.error(error);
+    res.status(500).send('An error occurred');
   }
 });
 
-app.post('/admin-feedback/reset-schedule', async (req, res) => {
-  // Clear the schedule table in the database
-  await createWaiterDB.clearScheduleTable();
+// app.post('/admin-feedback/reset-schedule', async (req, res) => {
+//   // Clear the schedule table in the database
+//   await createWaiterDB.clearScheduleTable();
 
-  // Redirect back to the admin screen
-  res.redirect('/admin-feedback');
-});
+//   // Redirect back to the admin screen
+//   res.redirect('/admin-feedback');
+// });
 
 
 
