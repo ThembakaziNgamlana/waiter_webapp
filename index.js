@@ -133,15 +133,29 @@ app.post('/waiter/:waiterName/update', async (req, res) => {
 // });
 app.get('/admin-feedback', async (req, res) => {
   const day = req.query.day; // Get the day from the query parameters
-
+ 
   try {
     // Retrieve the waiter names for the specified day
-    const waiterNames = await createWaiterDB.getWaiterNamesForDay(day);
+    //const waiterNames = await createWaiterDB.getWaiterNamesForDay(day);
+    const monday = await createWaiterDB.getWaiterNamesForDay('Monday');
+    const tuesday = await createWaiterDB.getWaiterNamesForDay('Tuesday');
+    const wednesday = await createWaiterDB.getWaiterNamesForDay('Wednesday');
+    const thursday = await createWaiterDB.getWaiterNamesForDay('Thursday');
+    const friday = await createWaiterDB.getWaiterNamesForDay('Friday');
+    const saturday = await createWaiterDB.getWaiterNamesForDay('Saturday');
+    const sunday = await createWaiterDB.getWaiterNamesForDay('Sunday');
+   console.log(monday,tuesday,wednesday,thursday,friday,saturday,sunday)
 
-    // Render the admin-feedback page and pass the waiterNames and day to the view
     res.render('admin-feedback', {
-      waiterNames,
-      day,
+  
+
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday,
+      sunday,
       title: 'Admin Feedback Page'
     });
   } catch (error) {
@@ -149,7 +163,7 @@ app.get('/admin-feedback', async (req, res) => {
     console.error(error);
     res.status(500).send('An error occurred');
   }
-});
+});   
 
 // app.post('/admin-feedback/reset-schedule', async (req, res) => {
 //   // Clear the schedule table in the database

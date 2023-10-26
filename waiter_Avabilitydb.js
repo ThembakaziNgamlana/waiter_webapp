@@ -1,5 +1,5 @@
 export default function createWaiterAvailabilityDB(db) {
-  async function insertWaiter(waiterName, selectedDays) {
+  async function insertWaiter(waiterName,selectedDays) {
     // Insert or update the waiter's name in the 'waiters' table
     await db.none('INSERT INTO waiters (waiter_name) VALUES ($1) ON CONFLICT (waiter_name) DO NOTHING', [waiterName]);
 
@@ -7,12 +7,17 @@ export default function createWaiterAvailabilityDB(db) {
     const waiter = await db.one('SELECT waiter_id FROM waiters WHERE waiter_name = $1', [waiterName]);
 
     // Clear existing selected days for this waiter
-    await db.none('DELETE FROM new_selected_days WHERE id = $1', [waiter.waiter_id]);
+    const avaliableWaiter = await db.oneOrNone('SELECT selected_day_id FROM  waiter_schedule WHERE  waiter_id = $1', [waiter.waiter_id])
+  if (avaliableWaiter){
+    await db.none('DELETE FROM waiter_schedule WHERE waiter_id = $1', [waiter.waiter_id]);
+  }
+   
 
-    // Insert the selected days for the waiter
-    // for (const day of selectedDays) {
-    //   await db.none('INSERT INTO new_selected_days (id, days) VALUES ($1, $2)', [waiter.waiter_id, day]);
-    // }
+  //  Insert the selected days for the waiter
+    for (const day of selectedDays) {
+      const  dayIDs = await db.one ('SELECT id FROM new_selected_days WHERE days = $1', [day])
+      await db.none('INSERT INTO waiter_schedule (waiter_id, selected_day_id) VALUES ($1, $2)', [waiter.waiter_id, dayIDs.id]);
+    }
   }
   async function insertWaiterAssignment() {
     const assignments = await db.manyOrNone(`
@@ -30,6 +35,7 @@ export default function createWaiterAvailabilityDB(db) {
     } else {
       return [];
     }
+    
   }
 
   async function getAllWaiterAssignments() {
@@ -48,20 +54,27 @@ export default function createWaiterAvailabilityDB(db) {
   }
 
   async function getWaiterNamesForDay(day) {
+    //console.log("Querying for day:", day); // Add this line for debugging
+    const dayId = await db.one('SELECT id FROM new_selected_days WHERE days = $1', [day]);
+    
+    
+    //console.log("Day ID:", dayId); // Add this line for debugging
+  
     const assignments = await db.manyOrNone(`
       SELECT waiters.waiter_name
       FROM waiter_schedule
       JOIN waiters ON waiters.waiter_id = waiter_schedule.waiter_id
       JOIN new_selected_days ON waiter_schedule.selected_day_id = new_selected_days.id
-      WHERE new_selected_days.days = $1
-    `, [day]);
-
-    if (Array.isArray(assignments)) {
+      WHERE selected_day_id = $1
+    `, [dayId.id]);
+  
+    if (assignments) {
       return assignments.map((assignment) => assignment.waiter_name);
     } else {
       return [];
     }
   }
+  
 
   async function allAssignments() {
     try {

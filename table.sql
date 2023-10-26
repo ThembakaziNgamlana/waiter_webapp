@@ -18,3 +18,13 @@ CREATE TABLE waiter_schedule (
      selected_day_id INT REFERENCES new_selected_days(id) ON DELETE CASCADE 
 );
 
+INSERT INTO new_selected_days (days)
+VALUES 
+('Monday'),
+('Tuesday'),
+('Wednesday'),
+('Thursday'),
+('Friday'),
+('Saturday'),
+('Sunday');
+ 
