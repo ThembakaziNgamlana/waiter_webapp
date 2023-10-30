@@ -4,33 +4,41 @@ import bodyParser from 'body-parser';
 import pgPromise from 'pg-promise';
 import session from 'express-session';
 import createWaiterAvailabilityDB from './waiter_Avabilitydb.js';
-
-
+import Handlebars from 'handlebars';
 
 const app = express();
 app.use(session({ secret: 'your-secret-key', resave: false, saveUninitialized: true }));
 
-
-
-
+Handlebars.registerHelper('eq', function (a, b, options) {
+  return a === b 
+});
 
 
 
 const handlebars = exphbs.create({
-    extname: '.handlebars',
-    defaultLayout: false,
-    layoutDir: './views/layouts',
-    helpers: {
-      inArray: function (value, array) {
-          // Check if array is defined and is an array
-          if (Array.isArray(array)) {
-              return array.includes(value);
-          }
-          // Handle the case where array is not defined or not an array
-          return false;
+  extname: '.handlebars',
+  defaultLayout: false,
+  layoutDir: './views/layouts',
+  helpers: {
+    inArray: function (value, array) {
+      if (Array.isArray(array)) {
+        return array.includes(value);
       }
-  }  
+      return false;
+    },
+    classifyColor: function (day, classifications) {
+      const classification = classifications[day];
+      if (classification === 'not-enough') {
+        return new Handlebars.SafeString('not-enough-class');
+      } else if (classification === 'enough') {
+        return new Handlebars.SafeString('enough-class');
+      } else {
+        return new Handlebars.SafeString('too-much-class');
+      }
+    }
+  }
 });
+
 
 const pgp = pgPromise();
 app.engine('handlebars', handlebars.engine);
@@ -111,32 +119,23 @@ app.post('/waiter/:waiterName/update', async (req, res) => {
     });
   }
 })
-// app.get('/admin-feedback', async (req, res) => {
-//   const day = req.params.day;
-//   const assignments = await createWaiterDB.insertWaiterAssignment();
-//   const waiterNames = await createWaiterAvailabilityDB.getWaiterNameForDay(day);
-
-//   // Make sure you have assignments before proceeding
-//   if (assignments) {
-//     const waiterAssignments = {};
-
-//     for (const day in assignments) {
-//       waiterAssignments[day] = assignments[day].waiters;
-//     }
-
-//     res.render('admin-feedback', { waiterAssignments, title: 'Admin Feedback Page' });
-//   } else {
-//     // Handle the case where there are no assignments (empty result)
-//     res.render('admin-feedback', { waiterAssignments: {}, title: 'Admin Feedback Page' }
-//   ('waiter-names', { waiterNames, day });
-//   }
-// });
 app.get('/admin-feedback', async (req, res) => {
-  const day = req.query.day; // Get the day from the query parameters
- 
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   try {
-    // Retrieve the waiter names for the specified day
-    //const waiterNames = await createWaiterDB.getWaiterNamesForDay(day);
+    const classifications = {}; // Define classifications here
+
+    for (const day of days) {
+      const waiterNames = await createWaiterDB.getWaiterNamesForDay(day);
+
+      if (waiterNames.length < 3) {
+        classifications[day] = 'not-enough';
+      } else if (waiterNames.length === 3) {
+        classifications[day] = 'enough';
+      } else {
+        classifications[day] = 'too-much';
+      }
+    }
+
     const monday = await createWaiterDB.getWaiterNamesForDay('Monday');
     const tuesday = await createWaiterDB.getWaiterNamesForDay('Tuesday');
     const wednesday = await createWaiterDB.getWaiterNamesForDay('Wednesday');
@@ -144,18 +143,19 @@ app.get('/admin-feedback', async (req, res) => {
     const friday = await createWaiterDB.getWaiterNamesForDay('Friday');
     const saturday = await createWaiterDB.getWaiterNamesForDay('Saturday');
     const sunday = await createWaiterDB.getWaiterNamesForDay('Sunday');
-   console.log(monday,tuesday,wednesday,thursday,friday,saturday,sunday)
-
-    res.render('admin-feedback', {
   
-
-      monday,
-      tuesday,
-      wednesday,
-      thursday,
-      friday,
-      saturday,
-      sunday,
+    res.render('admin-feedback', {
+      classifications,
+      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      data: {
+        Monday: monday,
+        Tuesday: tuesday,
+        Wednesday: wednesday,
+        Thursday: thursday,
+        Friday: friday,
+        Saturday: saturday,
+        Sunday: sunday,
+      },
       title: 'Admin Feedback Page'
     });
   } catch (error) {
@@ -163,7 +163,10 @@ app.get('/admin-feedback', async (req, res) => {
     console.error(error);
     res.status(500).send('An error occurred');
   }
-});   
+});
+
+
+
 
 // app.post('/admin-feedback/reset-schedule', async (req, res) => {
 //   // Clear the schedule table in the database

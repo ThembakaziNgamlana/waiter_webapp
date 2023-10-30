@@ -7,11 +7,11 @@ export default function createWaiterAvailabilityDB(db) {
     const waiter = await db.one('SELECT waiter_id FROM waiters WHERE waiter_name = $1', [waiterName]);
 
     // Clear existing selected days for this waiter
-    const avaliableWaiter = await db.oneOrNone('SELECT selected_day_id FROM  waiter_schedule WHERE  waiter_id = $1', [waiter.waiter_id])
+    const avaliableWaiter = await db.any('SELECT selected_day_id FROM  waiter_schedule WHERE  waiter_id = $1', [waiter.waiter_id])
   if (avaliableWaiter){
     await db.none('DELETE FROM waiter_schedule WHERE waiter_id = $1', [waiter.waiter_id]);
   }
-   
+
 
   //  Insert the selected days for the waiter
     for (const day of selectedDays) {
@@ -53,6 +53,7 @@ export default function createWaiterAvailabilityDB(db) {
     return [];
   }
 
+
   async function getWaiterNamesForDay(day) {
     //console.log("Querying for day:", day); // Add this line for debugging
     const dayId = await db.one('SELECT id FROM new_selected_days WHERE days = $1', [day]);
@@ -74,6 +75,12 @@ export default function createWaiterAvailabilityDB(db) {
       return [];
     }
   }
+  // const getWaiterNamesForDay = async (day) => {
+  //   const query = 'SELECT waiter_name FROM your_table WHERE day = $1';
+  //   const result = await db.manyOrNone(query, [day]);
+  
+  //   return result.map((row) => row.waiter_name);
+  // };
   
 
   async function allAssignments() {
@@ -91,13 +98,32 @@ export default function createWaiterAvailabilityDB(db) {
       return [];
     }
   }
-
+  // async function classifyWaitersForDays() {
+  //   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  //   const classifications = {};
+  // console.log(classifications)
+  //   for (const day of days) {
+  //     const waiterNames = await getWaiterNamesForDay(day);
+  
+  //     if (waiterNames.length < 3) {
+  //       classifications[day] = 'not-enough';
+  //     } else if (waiterNames.length === 3) {
+  //       classifications[day] = 'enough';
+  //     } else {
+  //       classifications[day] = 'too-much';
+  //     }
+  //   }
+  
+  //   return classifications;
+  // }
+  
   return {
     insertWaiterAssignment,
     getAllWaiterAssignments,
     insertWaiter,
     getSelectedDays,
     allAssignments,
-    getWaiterNamesForDay, // Return the getWaiterNamesForDay function
+    getWaiterNamesForDay, 
+    //classifyWaitersForDays// Return the getWaiterNamesForDay function
   };
 }

@@ -9,54 +9,102 @@
             <th>Day</th>
             <th>WaiterName</th>
         </tr>
+     
         <tr>
             <td>Monday</td>
             <td>
-                {{#each monday}}
-
-                        {{this}}
-                    
+                {{#each data.Monday}}
+                    {{#if (eq ../classifications.Monday "not-enough")}}
+                        <span class="not-enough">{{this}}</span>
+                    {{else if (eq ../classifications.Monday "enough")}}
+                        <span class="enough">{{this}}</span>
+                    {{else}}
+                        <span class="too-much">{{this}}</span>
+                    {{/if}}
                 {{/each}}
-                
             </td>
         </tr>
         <tr>
             <td>Tuesday</td>
             <td>
-                {{#each tuesday}}
-                    
-                        {{this}}
-                   
+                {{#each data.Tuesday}}
+                    {{#if (eq ../classifications.Tuesday "not-enough")}}
+                        <span class="not-enough">{{this}}</span>
+                    {{else if (eq ../classifications.Tuesday "enough")}}
+                        <span class="enough">{{this}}</span>
+                    {{else}}
+                        <span class "too-much">{{this}}</span>
+                    {{/if}}
                 {{/each}}
             </td>
         </tr>
         <tr>
             <td>Wednesday</td>
             <td>
-                {{#each wednesday}}
-                    
-                        {{this}}
-                  
+                {{#each data.Wednesday}}
+                    {{#if (eq ../classifications.Wednesday "not-enough")}}
+                        <span class="not-enough">{{this}}</span>
+                    {{else if (eq ../classifications.Wednesday "enough")}}
+                        <span class="enough">{{this}}</span>
+                    {{else}}
+                        <span class="too-much">{{this}}</span>
+                    {{/if}}
                 {{/each}}
             </td>
         </tr>
         <tr>
             <td>Thursday</td>
             <td>
-                {{#each thursday}}
-                    
-                        {{this}}
-                  
+                {{#each data.Thursday}}
+                    {{#if (eq ../classifications.Thursday "not-enough")}}
+                        <span class="not-enough">{{this}}</span>
+                    {{else if (eq ../classifications.Thursday "enough")}}
+                        <span class="enough">{{this}}</span>
+                    {{else}}
+                        <span class="too-much">{{this}}</span>
+                    {{/if}}
                 {{/each}}
             </td>
         </tr>
         <tr>
             <td>Friday</td>
             <td>
-                {{#each friday}}
-                   
-                        {{this}}
-                   
+                {{#each data.Friday}}
+                    {{#if (eq ../classifications.Friday "not-enough")}}
+                        <span class="not-enough">{{this}}</span>
+                    {{else if (eq ../classifications.Friday "enough")}}
+                        <span class="enough">{{this}}</span>
+                    {{else}}
+                        <span class="too-much">{{this}}</span>
+                    {{/if}}
+                {{/each}}
+            </td>
+        </tr>
+        <tr>
+            <td>Saturday</td>
+            <td>
+                {{#each data.Saturday}}
+                    {{#if (eq ../classifications.Saturday "not-enough")}}
+                        <span class="not-enough">{{this}}</span>
+                    {{else if (eq ../classifications.Saturday "enough")}}
+                        <span class="enough">{{this}}</span>
+                    {{else}}
+                        <span class="too-much">{{this}}</span>
+                    {{/if}}
+                {{/each}}
+            </td>
+        </tr>
+        <tr>
+            <td>Sunday</td>
+            <td>
+                {{#each data.Sunday}}
+                    {{#if (eq ../classifications.Sunday "not-enough")}}
+                        <span class="not-enough">{{this}}</span>
+                    {{else if (eq ../classifications.Sunday "enough")}}
+                        <span class="enough">{{this}}</span>
+                    {{else}}
+                        <span class="too-much">{{this}}</span>
+                    {{/if}}
                 {{/each}}
             </td>
         </tr>
@@ -66,5 +114,3 @@
     </form>
 </body>
 </html>
-
-
