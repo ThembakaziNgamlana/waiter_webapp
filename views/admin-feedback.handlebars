@@ -5,6 +5,52 @@
 </head>
 <body>
     <table>
+         <tr>
+            <td> Monday</td>
+            {{#each data.Monday}}
+            <td class="{{#if (eq ../classifications.Monday "not-enough")}}not-enough{{else if (eq ../classifications.Monday "enough")}}enough{{else}}too-much{{/if}}">
+                {{this}}
+            </td>
+            {{/each}}
+        </tr>
+          <tr>
+            <td> Tuesday</td>
+               
+            
+            {{#each data.Tuesday}}
+            <td class="{{#if (eq ../classifications.Tuesday "not-enough")}}not-enough{{else if (eq ../classifications.Tuesday "enough")}}enough{{else}}too-much{{/if}}">
+                {{this}}
+            </td>
+            {{/each}}
+        </tr>
+          <tr>
+    <td>Wednesday</td>
+    {{#each data.Wednesday}}
+    <td class="{{#if (eq ../classifications.wednesday "not-enough")}}not-enough{{else if (eq ../classifications.Sunday "enough")}}enough{{else}}too-much{{/if}}">
+        {{this}}
+    {{/each}}</td>
+</tr>
+  <tr>
+    <td>Thursday</td>
+    {{#each data.Thursday}}
+    <td class="{{#if (eq ../classifications.thursday "not-enough")}}not-enough{{else if (eq ../classifications.Sunday "enough")}}enough{{else}}too-much{{/if}}">
+        {{this}}
+    {{/each}}</td>
+</tr>
+  <tr>
+    <td>friday</td>
+    {{#each data.friday}}
+    <td class="{{#if (eq ../classifications.friday "not-enough")}}not-enough{{else if (eq ../classifications.Sunday "enough")}}enough{{else}}too-much{{/if}}">
+        {{this}}
+    {{/each}}</td>
+</tr>
+  <tr>
+    <td>Saturday</td>
+    {{#each data.Saturday}}
+    <td class="{{#if (eq ../classifications.Saturday "not-enough")}}not-enough{{else if (eq ../classifications.Sunday "enough")}}enough{{else}}too-much{{/if}}">
+        {{this}}
+    {{/each}}</td>
+</tr>
    <tr>
     <td>Sunday</td>
     {{#each data.Sunday}}
