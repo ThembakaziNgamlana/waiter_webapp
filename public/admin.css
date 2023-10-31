@@ -1,43 +1,70 @@
-table {
-    border-collapse: collapse;
-    width: 50%;
-    margin: 20px auto;
-    color: white;
+
+.grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Adjust the gap between grid items */
+  margin: 20px auto;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  border: 1px solid white;
+  padding: 10px;
 }
 
-th, td {
-    border: 1px solid white;
-    text-align: center;
-    padding: 8px;
+.grid-item {
+  text-align: center;
+  padding: 8px;
+  flex: 1; /* Distribute available space equally among items */
+  max-width: calc(33.33% - 10px); /* Adjust width as needed, considering the gap */
+  box-sizing: border-box;
 }
 
 #resetButton {
-    display: block;
-    margin-right: 20px;
-    
+  display: block;
+  margin-right: 20px;
 }
 
-body{
-  
-    background-image: url('./images/themby.webp');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}   
+body {
+  background-image: url('./images/themby.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 .not-enough {
   /* Style the cells with "not-enough" classification */
   background-color: red;
 }
 
- .too-much{
+.too-much {
   /* Style the cells with "too-much" classification */
   background-color: blue;
 }
 
-
-/* Apply background colors to the table cells */
- .enough  {
+.enough {
   /* Style the cells with "enough" classification */
   background-color: green;
 }
+.no-waiters{
+  background-color: brown;
+}
+.key_words {
+  width: 50%; /* Adjust the width as desired */
+  margin: 2px auto;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  border: 1px solid white;
+  padding: 5px;
+}
 
+.key_words h2 {
+  font-size: 1em; /* Adjust the font size for the heading */
+  margin: 0;
+  padding: 5px;
+}
+
+.key_words li {
+  font-size: 0.8em; /* Adjust the font size for list items */
+  list-style-type: none;
+  margin: 0;
+  padding: 3px;
+}

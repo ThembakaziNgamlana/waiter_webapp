@@ -1,64 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="admin.css">
+    <link rel="stylesheet" type="text/css" href="/admin.css">
 </head>
+<div class="key_words">
+  <h2>Information about the table</h2>
+  <ul>
+    <li class="not-enough">not-enough: red</li>
+    <li class="too-much">too-much: blue</li>
+    <li class="enough">enough: green</li>
+    <li class="no-waiters">no-waiters: brown</li>
+  </ul>
+</div>
 <body>
-    <table>
-         <tr>
-            <td> Monday</td>
+    <div class="grid-container">
+        <div class="grid-item">
+            <p>Monday</p>
             {{#each data.Monday}}
-            <td class="{{#if (eq ../classifications.Monday "not-enough")}}not-enough{{else if (eq ../classifications.Monday "enough")}}enough{{else}}too-much{{/if}}">
+            <div class="{{#if (eq ../classifications.Monday "not-enough")}}not-enough{{else if (eq ../classifications.Monday "enough")}}enough{{else}}too-much{{/if}}">
                 {{this}}
-            </td>
+            </div>
             {{/each}}
-        </tr>
-          <tr>
-            <td> Tuesday</td>
-               
-            
+        </div>
+
+        <div class="grid-item">
+            <p>Tuesday</p>
             {{#each data.Tuesday}}
-            <td class="{{#if (eq ../classifications.Tuesday "not-enough")}}not-enough{{else if (eq ../classifications.Tuesday "enough")}}enough{{else}}too-much{{/if}}">
+            <div class="{{#if (eq ../classifications.Tuesday "not-enough")}}not-enough{{else if (eq ../classifications.Tuesday "enough")}}enough{{else}}too-much{{/if}}">
                 {{this}}
-            </td>
+            </div>
             {{/each}}
-        </tr>
-          <tr>
-    <td>Wednesday</td>
-    {{#each data.Wednesday}}
-    <td class="{{#if (eq ../classifications.wednesday "not-enough")}}not-enough{{else if (eq ../classifications.Sunday "enough")}}enough{{else}}too-much{{/if}}">
-        {{this}}
-    {{/each}}</td>
-</tr>
-  <tr>
-    <td>Thursday</td>
-    {{#each data.Thursday}}
-    <td class="{{#if (eq ../classifications.thursday "not-enough")}}not-enough{{else if (eq ../classifications.Sunday "enough")}}enough{{else}}too-much{{/if}}">
-        {{this}}
-    {{/each}}</td>
-</tr>
-  <tr>
-    <td>friday</td>
-    {{#each data.friday}}
-    <td class="{{#if (eq ../classifications.friday "not-enough")}}not-enough{{else if (eq ../classifications.Sunday "enough")}}enough{{else}}too-much{{/if}}">
-        {{this}}
-    {{/each}}</td>
-</tr>
-  <tr>
-    <td>Saturday</td>
-    {{#each data.Saturday}}
-    <td class="{{#if (eq ../classifications.Saturday "not-enough")}}not-enough{{else if (eq ../classifications.Sunday "enough")}}enough{{else}}too-much{{/if}}">
-        {{this}}
-    {{/each}}</td>
-</tr>
-   <tr>
-    <td>Sunday</td>
-    {{#each data.Sunday}}
-    <td class="{{#if (eq ../classifications.Sunday "not-enough")}}not-enough{{else if (eq ../classifications.Sunday "enough")}}enough{{else}}too-much{{/if}}">
-        {{this}}
-    {{/each}}</td>
-</tr>
- </table>
+        </div>
+
+        <div class="grid-item">
+            <p>Wednesday</p>
+            {{#each data.Wednesday}}
+            <div class="{{#if (eq ../classifications.Wednesday "not-enough")}}not-enough{{else if (eq ../classifications.Wednesday "enough")}}enough{{else}}too-much{{/if}}">
+                {{this}}
+            </div>
+            {{/each}}
+        </div>
+
+        <div class="grid-item">
+            <p>Thursday</p>
+            {{#each data.Thursday}}
+            <div class="{{#if (eq ../classifications.Thursday "not-enough")}}not-enough{{else if (eq ../classifications.Thursday "enough")}}enough{{else}}too-much{{/if}}">
+                {{this}}
+            </div>
+            {{/each}}
+        </div>
+
+        <div class="grid-item">
+            <p>Friday</p>
+            {{#each data.Friday}}
+            <div class="{{#if (eq ../classifications.Friday "not-enough")}}not-enough{{else if (eq ../classifications.Friday "enough")}}enough{{else}}too-much{{/if}}">
+                {{this}}
+            </div>
+            {{/each}}
+        </div>
+
+        <div class="grid-item">
+            <p>Saturday</p>
+            {{#each data.Saturday}}
+            <div class="{{#if (eq ../classifications.Saturday "not-enough")}}not-enough{{else if (eq ../classifications.Saturday "enough")}}enough{{else}}too-much{{/if}}">
+                {{this}}
+            </div>
+            {{/each}}
+        </div>
+
+        <div class="grid-item">
+            <p>Sunday</p>
+            {{#each data.Sunday}}
+            <div class="{{#if (eq ../classifications.Sunday "not-enough")}}not-enough{{else if (eq ../classifications.Sunday "enough")}}enough{{else}}too-much{{/if}}">
+                {{this}}
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
     <form action="/admin-feedback/reset-schedule" method="post">
         <button type="submit">Reset Schedule</button>
     </form>

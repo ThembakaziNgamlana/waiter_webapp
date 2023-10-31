@@ -127,7 +127,9 @@ app.get('/admin-feedback', async (req, res) => {
     for (const day of days) {
       const waiterNames = await createWaiterDB.getWaiterNamesForDay(day);
 
-      if (waiterNames.length < 3) {
+      if (waiterNames.length === 0) {
+        classifications[day] = 'no-waiters'; // Add a new classification for days with no waiters
+      } else if (waiterNames.length < 3) {
         classifications[day] = 'not-enough';
       } else if (waiterNames.length === 3) {
         classifications[day] = 'enough';
@@ -143,7 +145,7 @@ app.get('/admin-feedback', async (req, res) => {
     const friday = await createWaiterDB.getWaiterNamesForDay('Friday');
     const saturday = await createWaiterDB.getWaiterNamesForDay('Saturday');
     const sunday = await createWaiterDB.getWaiterNamesForDay('Sunday');
-  
+
     res.render('admin-feedback', {
       classifications,
       days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
@@ -156,7 +158,7 @@ app.get('/admin-feedback', async (req, res) => {
         Saturday: saturday,
         Sunday: sunday,
       },
-      title: 'Admin Feedback Page'
+      title: 'Admin Feedback Page',
     });
   } catch (error) {
     // Handle errors, e.g., by rendering an error page
@@ -168,17 +170,32 @@ app.get('/admin-feedback', async (req, res) => {
 
 
 
-// app.post('/admin-feedback/reset-schedule', async (req, res) => {
-//   // Clear the schedule table in the database
-//   await createWaiterDB.clearScheduleTable();
+app.post('/admin-feedback/reset-schedule', async (req, res) => {
+  // Clear the data being displayed in your HTML (the data variable)
+  // Set the data for all days to an empty array or as needed
+  const data = {
+    Monday: [],
+    Tuesday: [],
+    Wednesday: [],
+    Thursday: [],
+    Friday: [],
+    Saturday: [],
+    Sunday: [],
+  };
 
-//   // Redirect back to the admin screen
-//   res.redirect('/admin-feedback');
-// });
+  // Redirect back to the admin screen with the cleared data
+  res.render('admin-feedback', {
+    classifications: {}, // You can keep the classifications as it is
+    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    data,
+    title: 'Admin Feedback Page'
+  });
+});
 
 
 
-const PORT = process.env.PORT || 3000;
+
+const PORT = process.env.PORT || 3012;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
