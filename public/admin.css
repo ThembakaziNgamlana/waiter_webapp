@@ -23,21 +23,20 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-     color: white;
-}
-td .not-enough {
+}   
+.not-enough {
   /* Style the cells with "not-enough" classification */
   background-color: red;
 }
 
- td .too-much{
+ .too-much{
   /* Style the cells with "too-much" classification */
   background-color: blue;
 }
 
 
 /* Apply background colors to the table cells */
- td .enough  {
+ .enough  {
   /* Style the cells with "enough" classification */
   background-color: green;
 }
