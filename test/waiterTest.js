@@ -1,6 +1,6 @@
 import assert from 'assert';
 import pgPromise from 'pg-promise';
-import createWaiterAvailabilityDB from './waiter_Avabilitydb.js';
+import createWaiterAvailabilityDB from '../waiter_Avabilitydb.js';
 
 const pgp = pgPromise();
 
