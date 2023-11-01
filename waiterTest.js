@@ -13,7 +13,6 @@ describe('createWaiterAvailabilityDB', function() {
     this.timeout(10000);
 
     beforeEach(async () => {
-        // Add any setup logic if needed
     });
 
    
