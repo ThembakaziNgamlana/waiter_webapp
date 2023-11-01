@@ -1,19 +1,16 @@
 export default function createWaiterAvailabilityDB(db) {
   async function insertWaiter(waiterName,selectedDays) {
-    // Insert or update the waiter's name in the 'waiters' table
+  
     await db.none('INSERT INTO waiters (waiter_name) VALUES ($1) ON CONFLICT (waiter_name) DO NOTHING', [waiterName]);
 
-    // Fetch the waiter_id for the inserted waiter
     const waiter = await db.one('SELECT waiter_id FROM waiters WHERE waiter_name = $1', [waiterName]);
 
-    // Clear existing selected days for this waiter
     const avaliableWaiter = await db.any('SELECT selected_day_id FROM  waiter_schedule WHERE  waiter_id = $1', [waiter.waiter_id])
   if (avaliableWaiter){
     await db.none('DELETE FROM waiter_schedule WHERE waiter_id = $1', [waiter.waiter_id]);
   }
 
 
-  //  Insert the selected days for the waiter
     for (const day of selectedDays) {
       const  dayIDs = await db.one ('SELECT id FROM new_selected_days WHERE days = $1', [day])
       await db.none('INSERT INTO waiter_schedule (waiter_id, selected_day_id) VALUES ($1, $2)', [waiter.waiter_id, dayIDs.id]);
@@ -55,12 +52,9 @@ export default function createWaiterAvailabilityDB(db) {
 
 
   async function getWaiterNamesForDay(day) {
-    //console.log("Querying for day:", day); // Add this line for debugging
+   
     const dayId = await db.one('SELECT id FROM new_selected_days WHERE days = $1', [day]);
     
-    
-    //console.log("Day ID:", dayId); // Add this line for debugging
-  
     const assignments = await db.manyOrNone(`
       SELECT waiters.waiter_name
       FROM waiter_schedule
@@ -75,13 +69,7 @@ export default function createWaiterAvailabilityDB(db) {
       return [];
     }
   }
-  // const getWaiterNamesForDay = async (day) => {
-  //   const query = 'SELECT waiter_name FROM your_table WHERE day = $1';
-  //   const result = await db.manyOrNone(query, [day]);
-  
-  //   return result.map((row) => row.waiter_name);
-  // };
-  
+ 
 
   async function allAssignments() {
     try {
@@ -98,25 +86,7 @@ export default function createWaiterAvailabilityDB(db) {
       return [];
     }
   }
-  // async function classifyWaitersForDays() {
-  //   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  //   const classifications = {};
-  // console.log(classifications)
-  //   for (const day of days) {
-  //     const waiterNames = await getWaiterNamesForDay(day);
-  
-  //     if (waiterNames.length < 3) {
-  //       classifications[day] = 'not-enough';
-  //     } else if (waiterNames.length === 3) {
-  //       classifications[day] = 'enough';
-  //     } else {
-  //       classifications[day] = 'too-much';
-  //     }
-  //   }
-  
-  //   return classifications;
-  // }
-  
+
   return {
     insertWaiterAssignment,
     getAllWaiterAssignments,
@@ -124,6 +94,6 @@ export default function createWaiterAvailabilityDB(db) {
     getSelectedDays,
     allAssignments,
     getWaiterNamesForDay, 
-    //classifyWaitersForDays// Return the getWaiterNamesForDay function
+   
   };
 }
