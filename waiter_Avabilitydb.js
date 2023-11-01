@@ -87,6 +87,14 @@ export default function createWaiterAvailabilityDB(db) {
     }
   }
 
+  async function clearWaiterNames() {
+    await db.none('DELETE FROM waiters');
+
+
+    await db.none('DELETE FROM waiter_schedule');
+  }
+
+
   return {
     insertWaiterAssignment,
     getAllWaiterAssignments,
@@ -94,6 +102,6 @@ export default function createWaiterAvailabilityDB(db) {
     getSelectedDays,
     allAssignments,
     getWaiterNamesForDay, 
-   
+    clearWaiterNames,
   };
 }

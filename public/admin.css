@@ -32,12 +32,12 @@ body {
 
 .not-enough {
   /* Style the cells with "not-enough" classification */
-  background-color: red;
+  background-color:orange;
 }
 
 .too-much {
   /* Style the cells with "too-much" classification */
-  background-color: blue;
+  background-color: red;
 }
 
 .enough {
