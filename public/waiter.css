@@ -6,19 +6,17 @@ body{
     background-attachment: fixed;
     color:white
 }
-.container {
+/* .container {
     text-align: center;
     background-color: white;
     padding: 20px; /* Adjust the padding to control the size of the container */
-    margin-right: 50px;
+    /* margin-right: 50px;
     margin-left: 200px;
     color: black;
-}
+} */ 
 
 .the_list li {
     text-align: center;
     margin-bottom: 10px;
     margin-right: 50px;
 }
-
-

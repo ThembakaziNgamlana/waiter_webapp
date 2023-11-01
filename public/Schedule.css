@@ -17,3 +17,20 @@ body{
     color: green;
 
 }
+
+.container {
+    text-align: center;
+    border: 2px solid white;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .day-label {
+    font-size: 25px; /* Adjust the font size as needed */
+  }
+  
+  h3{
+    font-size: 30px;
+  }
