@@ -69,7 +69,7 @@ export default function createWaiterAvailabilityDB(db) {
       return [];
     }
   }
- 
+
 
   async function allAssignments() {
     try {

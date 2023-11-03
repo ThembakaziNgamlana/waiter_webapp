@@ -5,14 +5,18 @@ import pgPromise from 'pg-promise';
 import session from 'express-session';
 import createWaiterAvailabilityDB from './waiter_Avabilitydb.js';
 import Handlebars from 'handlebars';
+import WaiterRoutes from './waiterRoutes.js';
+
+
+
+
 
 const app = express();
 app.use(session({ secret: 'your-secret-key', resave: false, saveUninitialized: true }));
-
++
 Handlebars.registerHelper('eq', function (a, b, options) {
   return a === b 
 });
-
 
 
 const handlebars = exphbs.create({
@@ -48,6 +52,9 @@ const db = pgp(connectionString);
 const  createWaiterDB = createWaiterAvailabilityDB(db);
 
 
+const waiters = WaiterRoutes(createWaiterDB);
+
+
 
 // Redirect from root URL to /waiter
 app.get('/', (req, res) => {
@@ -57,127 +64,17 @@ app.get('/', (req, res) => {
 
 
 // Define a route for waiter schedules
-app.get('/waiter/:waiterName', async (req, res) => {
-    const waiterName = req.params.waiterName;
-    // Render the waiter's schedule page with the name as a parameter
-    res.render('waitersSchedule', {
-        title: `Welcome, ${waiterName}!`,
-        waiterName: waiterName, // Pass the waiterName to the template
-    });
-});
+app.get('/waiter/:waiterName', waiters.waiterNames);
 
-app.get('/waiter/:waiterName/update', async (req, res) => {
-    const waiterName = req.params.waiterName
-    const selectedDays = await createWaiterDB.getSelectedDays(waiterName);
-
-    console.log('Selected Days:', selectedDays);
-    // Render a template to display the selected days
-    res.render('waitersSchedule', {
-        waiterName:waiterName,
-        title: `Schedule for ${waiterName}`,
-         selectedDays:selectedDays,
-    });
-});
-app.post('/waiter/:waiterName/update', async (req, res) => {
-  const waiterName = req.params.waiterName;
-
-  let selectedDays = req.body.days; // Obtain selected days from the request
-
-  // Perform validation: Ensure that the number of selected days is between 3 and 5.
-  if (selectedDays.length < 3 || selectedDays.length > 5) {
-    const errorMessage = 'Please select between 3 and 5 days.';
-    
-    // Render the form with the error message.
-    res.render('waitersSchedule', {
-      waiterName: waiterName,
-      title: `Schedule for ${waiterName}`,
-      selectedDays:selectedDays,
-      errorMessage: errorMessage,
-    });
-  } else {
-    // Validation passed, insert the selected days into the database.
-    await createWaiterDB.insertWaiter(waiterName, selectedDays);
-    
-    // Set a success message.
-    const successMessage = 'You have successfully updated your working days .';
-
-    // Render the form with the success message.
-    res.render('waitersSchedule', {
-      waiterName: waiterName,
-      title: `Schedule for ${waiterName}`,
-      selectedDays: selectedDays,
-      successMessage: successMessage,
-    });
-  }
-})
-app.get('/admin-feedback', async (req, res) => {
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  try {
-    const classifications = {}; // Define classifications here
-
-    for (const day of days) {
-      const waiterNames = await createWaiterDB.getWaiterNamesForDay(day);
-
-      if (waiterNames.length === 0) {
-        classifications[day] = 'no-waiters'; // Add a new classification for days with no waiters
-      } else if (waiterNames.length < 3) {
-        classifications[day] = 'not-enough';
-      } else if (waiterNames.length === 3) {
-        classifications[day] = 'enough';
-      } else {
-        classifications[day] = 'too-much';
-      }
-    }
-
-    const monday = await createWaiterDB.getWaiterNamesForDay('Monday');
-    const tuesday = await createWaiterDB.getWaiterNamesForDay('Tuesday');
-    const wednesday = await createWaiterDB.getWaiterNamesForDay('Wednesday');
-    const thursday = await createWaiterDB.getWaiterNamesForDay('Thursday');
-    const friday = await createWaiterDB.getWaiterNamesForDay('Friday');
-    const saturday = await createWaiterDB.getWaiterNamesForDay('Saturday');
-    const sunday = await createWaiterDB.getWaiterNamesForDay('Sunday');
-
-    res.render('admin-feedback', {
-      classifications,
-      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      data: {
-        Monday: monday,
-        Tuesday: tuesday,
-        Wednesday: wednesday,
-        Thursday: thursday,
-        Friday: friday,
-        Saturday: saturday,
-        Sunday: sunday,
-      },
-      title: 'Admin Feedback Page',
-    });
-  } catch (error) {
-    // Handle errors, e.g., by rendering an error page
-    console.error(error);
-    res.status(500).send('An error occurred');
-  }
-});
-app.post('/admin-feedback/reset-schedule', async (req, res) => {
-  try {
-    await createWaiterDB.clearWaiterNames();
-
-    // Set a success message.
-    const successMessage = 'The database has been cleared successfully.';
-
-    res.render('admin-feedback', {
-      classifications: {},
-      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      data: {},
-      title: 'Admin Feedback Page',
-      successMessage: successMessage, // Pass the success message to the template
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('An error occurred while resetting the schedule');
-  }
-});
+app.get('/waiter/:waiterName/update', waiters.waiterUpdate);
 
 
+app.post('/waiter/:waiterName/update', waiters.selectDay);
+  
+
+app.get('/admin-feedback', waiters.admin);
+
+app.post('/admin-feedback/reset-schedule', waiters.reset)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

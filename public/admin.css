@@ -30,6 +30,11 @@ body {
   background-attachment: fixed;
 }
 
+
+.no-waiters {
+  background-color: black;
+}
+
 .not-enough {
   /* Style the cells with "not-enough" classification */
   background-color:orange;
@@ -43,9 +48,6 @@ body {
 .enough {
   /* Style the cells with "enough" classification */
   background-color: green;
-}
-.no-waiters{
-  background-color: brown;
 }
 
 .key_words {
