@@ -14,16 +14,16 @@
 </div>
 <body>
     <div class="grid-container">
-        <div class="grid-item">
-            <p>Monday</p>
-            {{#each data.Monday}}
-            <div class="{{#if (eq ../classifications.Monday "not-enough")}}not-enough{{else if (eq ../classifications.Monday "enough")}}enough{{else}}too-much{{/if}}">
-                {{this}}
-            </div>
-            {{/each}}
-        </div>
+       <div class="grid-item">
+    <p>Monday</p>
+    {{#each data.Monday}}
+    <div class="{{#if (eq ../classifications.Monday "not-enough")}}not-enough{{else if (eq ../classifications.Monday "enough")}}enough{{else if (eq ../classifications.Monday "no-waiters")}}no-waiters{{else}}too-much{{/if}}">
+        {{this}}
+    </div>
+    {{/each}}
+    </div>
 
-        <div class="grid-item">
+         <div class="grid-item">
             <p>Tuesday</p>
             {{#each data.Tuesday}}
             <div class="{{#if (eq ../classifications.Tuesday "not-enough")}}not-enough{{else if (eq ../classifications.Tuesday "enough")}}enough{{else}}too-much{{/if}}">

@@ -26,16 +26,7 @@ const handlebars = exphbs.create({
       }
       return false;
     },
-    classifyColor: function (day, classifications) {
-      const classification = classifications[day];
-      if (classification === 'not-enough') {
-        return new Handlebars.SafeString('not-enough-class');
-      } else if (classification === 'enough') {
-        return new Handlebars.SafeString('enough-class');
-      } else {
-        return new Handlebars.SafeString('too-much-class');
-      }
-    }
+   
   }
 });
 
@@ -167,47 +158,28 @@ app.get('/admin-feedback', async (req, res) => {
   }
 });
 app.post('/admin-feedback/reset-schedule', async (req, res) => {
-  // Clear the data being displayed in your HTML (the data variable)
-  // Set the data for all days to an empty array
-  const data = {
-    Monday: [],
-    Tuesday: [],
-    Wednesday: [],
-    Thursday: [],
-    Friday: [],
-    Saturday: [],
-    Sunday: [],
-  };
+  try {
+    await createWaiterDB.clearWaiterNames();
 
-  // Redirect back to the admin screen with the cleared data
-  res.render('admin-feedback', {
-    classifications: {}, // You can keep the classifications as it is
-    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-    data,
-    title: 'Admin Feedback Page'
-  });
-});
+    // Set a success message.
+    const successMessage = 'The database has been cleared successfully.';
 
-app.post('/admin-feedback/reset-schedule', async (req, res) => {
-  // Call the clearWaiterNames function to delete the names from the database
-  await createWaiterDB.clearWaiterNames();
-
-  // Redirect back to the admin screen with the cleared data
-  res.render('admin-feedback', {
-    classifications: {},
-    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-    data: {},
-    title: 'Admin Feedback Page'
-  });
+    res.render('admin-feedback', {
+      classifications: {},
+      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      data: {},
+      title: 'Admin Feedback Page',
+      successMessage: successMessage, // Pass the success message to the template
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('An error occurred while resetting the schedule');
+  }
 });
 
 
 
-
-
-
-
-const PORT = process.env.PORT || 3012;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
