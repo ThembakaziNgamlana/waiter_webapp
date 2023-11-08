@@ -1,49 +1,63 @@
 export default function  WaiterRoutes(createWaiterDB) {
 
-
-    async function waiterUpdate(req, res) {
-      const waiterName = req.params.waiterName
-      const selectedDays = await createWaiterDB.getSelectedDays(waiterName);
-  
-      console.log('Selected Days:', selectedDays);
-      // Render a template to display the selected days
-      res.render('waitersSchedule', {
-          waiterName:waiterName,
-          title: `Schedule for ${waiterName}`,
-           selectedDays:selectedDays,
-      });
-    }
-
-  async function waiterNames(req, res){
+  // async function waiterUpdate(req, res) {
+  //   const waiterName = req.params.waiterName;
+  //   //const selectedDays = req.session[waiterName] || []; // Retrieve selected days from session, default to an empty array if not found
+  //   const selectedDays = await createWaiterDB.getSelectedDays(waiterName);
+  //   // Render a template to display the selected days
+  //   res.render('waitersSchedule', {
+  //     waiterName: waiterName,
+  //     title: `Schedule for ${waiterName}`,
+  //     selectedDays: selectedDays,
+  // });
+  // }
+  async function waiterUpdate(req, res) {
     const waiterName = req.params.waiterName;
-    // Render the waiter's schedule page with the name as a parameter
+    const selectedDays = req.session[waiterName] || []; // Retrieve selected days from session, default to an empty array if not found
+  
+    // Render a template to display the selected days
     res.render('waitersSchedule', {
-        title: `Welcome, ${waiterName}!`,
-        waiterName: waiterName, // Pass the waiterName to the template
+      waiterName: waiterName,
+      title: `Schedule for ${waiterName}`,
+      selectedDays: selectedDays,
     });
   }
 
 
-  async function selectDay(req, res){
-    let  waiterName = req.params.waiterName;
-
+  async function waiterNames(req, res) {
+    const waiterName = req.params.waiterName;
+    const selectedDays = await createWaiterDB.getSelectedDays(waiterName);
+  
+    // Render the waiter's schedule page with the name and selected days as parameters
+    res.render('waitersSchedule', {
+      title: `Welcome, ${waiterName}!`,
+      waiterName: waiterName,
+      selectedDays: selectedDays,
+    });
+  }
+  async function selectDay(req, res) {
+    let waiterName = req.params.waiterName;
+  
     let selectedDays = req.body.days; // Obtain selected days from the request
+  
+    // Store the selected days in the session
+    req.session[waiterName] = selectedDays;
   
     // Perform validation: Ensure that the number of selected days is between 3 and 5.
     if (selectedDays.length < 3 || selectedDays.length > 5) {
       const errorMessage = 'Please select between 3 and 5 days.';
-      
+  
       // Render the form with the error message.
       res.render('waitersSchedule', {
         waiterName: waiterName,
         title: `Schedule for ${waiterName}`,
-        selectedDays:selectedDays,
+        selectedDays: selectedDays,
         errorMessage: errorMessage,
       });
     } else {
       // Validation passed, insert the selected days into the database.
       await createWaiterDB.insertWaiter(waiterName, selectedDays);
-      
+  
       // Set a success message.
       const successMessage = 'You have successfully updated your working days .';
   
@@ -56,6 +70,38 @@ export default function  WaiterRoutes(createWaiterDB) {
       });
     }
   }
+  // async function selectDay(req, res){
+  //   let  waiterName = req.params.waiterName;
+
+  //   let selectedDays = req.body.days; // Obtain selected days from the request
+  
+  //   // Perform validation: Ensure that the number of selected days is between 3 and 5.
+  //   if (selectedDays.length < 3 || selectedDays.length > 5) {
+  //     const errorMessage = 'Please select between 3 and 5 days.';
+      
+  //     // Render the form with the error message.
+  //     res.render('waitersSchedule', {
+  //       waiterName: waiterName,
+  //       title: `Schedule for ${waiterName}`,
+  //       selectedDays:selectedDays,
+  //       errorMessage: errorMessage,
+  //     });
+  //   } else {
+  //     // Validation passed, insert the selected days into the database.
+  //     await createWaiterDB.insertWaiter(waiterName, selectedDays);
+      
+  //     // Set a success message.
+  //     const successMessage = 'You have successfully updated your working days .';
+  
+  //     // Render the form with the success message.
+  //     res.render('waitersSchedule', {
+  //       waiterName: waiterName,
+  //       title: `Schedule for ${waiterName}`,
+  //       selectedDays: selectedDays,
+  //       successMessage: successMessage,
+  //     });
+  //   }
+  // }
 
  async function admin(req, res){
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -86,7 +132,7 @@ export default function  WaiterRoutes(createWaiterDB) {
     const saturday = await createWaiterDB.getWaiterNamesForDay('Saturday');
     const sunday = await createWaiterDB.getWaiterNamesForDay('Sunday');
 
-    res.render('admin-feedback', {
+    res.render('days', {
       classifications,
       days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
       data: {
@@ -98,7 +144,7 @@ export default function  WaiterRoutes(createWaiterDB) {
         Saturday: saturday,
         Sunday: sunday,
       },
-      title: 'Admin Feedback Page',
+      title: 'days Page',
     });
   } catch (error) {
     console.error(error);
@@ -113,11 +159,11 @@ export default function  WaiterRoutes(createWaiterDB) {
     // Set a success message.
     const successMessage = 'The database has been cleared successfully.';
 
-    res.render('admin-feedback ', {
+    res.render('days', {
       classifications: {},
       days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
       data: {},
-      title: 'Admin Feedback Page',
+      title: 'days Page',
       successMessage: successMessage, // Pass the success message to the template
     });
   } catch (error) {
@@ -130,6 +176,7 @@ waiterUpdate,
 waiterNames,
 selectDay,
 admin,
+//updateSelectedDays,
 reset,
   }
 }

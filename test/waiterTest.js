@@ -25,7 +25,7 @@ describe('createWaiterAvailabilityDB', function () {
     });
 
     it('should get selected days for a waiter', async () => {
-        const waiterName = 'Thembi'; // Replace with an actual waiter's name
+        const waiterName = 'Thembi'; 
         const selectedDays = await createWaiterDB.getSelectedDays(waiterName);
         assert.isArray(selectedDays);
     });

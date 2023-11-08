@@ -9,7 +9,7 @@
   
   <h3>Select Available Days:</h3>
     <h2>Welcome, {{waiterName}}</h2>
-
+{{!-- 
 {{#if selectedDays}}
   <h3>Your Schedule:</h3>
   <ul>
@@ -17,7 +17,7 @@
       <li>{{this}}</li>
     {{/each}}
   </ul>
-{{/if}}
+{{/if}} --}}
 
   <form action="/waiter/{{waiterName}}/update" method="post">
    <div class="error-message">{{errorMessage}}
@@ -66,7 +66,7 @@
 
     <div>
         <label class="day-label" for="day7">Sunday</label>
-          <input type="checkbox" id="day&-7" name="days" value="Sunday" {{#if (inArray "Sunday" selectedDays)}}checked{{/if}}>
+          <input type="checkbox" id="day7" name="days" value="Sunday" {{#if (inArray "Sunday" selectedDays)}}checked{{/if}}>
     </div>
 
     <div>

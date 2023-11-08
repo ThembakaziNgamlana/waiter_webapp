@@ -17,6 +17,13 @@ app.use(session({ secret: 'your-secret-key', resave: false, saveUninitialized: t
 Handlebars.registerHelper('eq', function (a, b, options) {
   return a === b 
 });
+const sessionOptions = {
+  secret: 'your_secret_key', // Replace with a secret key for session management
+  resave: false,
+  saveUninitialized: true,
+};
+
+app.use(session(sessionOptions));
 
 
 const handlebars = exphbs.create({
@@ -68,13 +75,14 @@ app.get('/waiter/:waiterName', waiters.waiterNames);
 
 app.get('/waiter/:waiterName/update', waiters.waiterUpdate);
 
+//app.post('/waiter/:waiterName/update', waiters.updateSelectedDays);
 
 app.post('/waiter/:waiterName/update', waiters.selectDay);
   
 
-app.get('/admin-feedback', waiters.admin);
+app.get('/days', waiters.admin);
 
-app.post('/admin-feedback/reset-schedule', waiters.reset)
+app.post('/days/reset-schedule', waiters.reset)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
