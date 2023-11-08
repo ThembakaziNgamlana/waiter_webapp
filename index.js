@@ -12,10 +12,9 @@ import WaiterRoutes from './waiterRoutes.js';
 
 
 const app = express();
-app.use(session({ secret: 'your-secret-key', resave: false, saveUninitialized: true }));
-+
+
 Handlebars.registerHelper('eq', function (a, b, options) {
-  return a === b 
+  return a === b;
 });
 const sessionOptions = {
   secret: 'your_secret_key', // Replace with a secret key for session management
