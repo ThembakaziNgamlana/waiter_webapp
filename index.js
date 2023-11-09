@@ -72,12 +72,10 @@ app.get('/', (req, res) => {
 // Define a route for waiter schedules
 app.get('/waiter/:waiterName', waiters.waiterNames);
 
-app.get('/waiter/:waiterName/update', waiters.waiterUpdate);
+app.get('/waiter/:waiterName', waiters.displayWaiterSchedule);
 
-//app.post('/waiter/:waiterName/update', waiters.updateSelectedDays);
-
-app.post('/waiter/:waiterName/update', waiters.selectDay);
-  
+//app.post('/waiter/:waiterName/update', waiters.updateSelectedDays)
+app.post('/waiter/:waiterName', waiters.selectDay);
 
 app.get('/days', waiters.admin);
 

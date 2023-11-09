@@ -18,18 +18,38 @@ describe('createWaiterAvailabilityDB', function () {
     beforeEach(async () => {
         
     });
-
+    it('should insert waiters for a specific day', async () => {
+        const day = 'Friday';
+        const waitersToAdd = ['Zola', 'Bellinda', 'Angel'];
+        
+        for (const waiter of waitersToAdd) {
+            await createWaiterDB.insertWaiter(waiter, [day]);
+        }
+    
+        const waiterNamesForDay = await createWaiterDB.getWaiterNamesForDay(day);
+        
+        assert.isArray(waiterNamesForDay);
+        assert.lengthOf(waiterNamesForDay, waitersToAdd.length);
+        
+        for (const waiter of waitersToAdd) {
+            assert.include(waiterNamesForDay, waiter);
+        }
+    });
+    
     it('should get all waiter assignments', async () => {
         const allAssignments = await createWaiterDB.getAllWaiterAssignments();
         assert.isArray(allAssignments);
     });
 
-    it('should get selected days for a waiter', async () => {
-        const waiterName = 'Thembi'; 
-        const selectedDays = await createWaiterDB.getSelectedDays(waiterName);
-        assert.isArray(selectedDays);
+  
+    it('should return an empty array for a day with no assigned waiters', async () => {
+        const dayWithNoAssignments = 'Sunday';
+        const waiterNames = await createWaiterDB.getWaiterNamesForDay(dayWithNoAssignments);
+        console.log(`Waiter Names for ${dayWithNoAssignments}:`, waiterNames);
+        assert.isEmpty(waiterNames);
     });
-
+    
+    
     it('should get waiter names for a specific day', async () => {
         
         const day = 'Monday'; 
@@ -44,16 +64,17 @@ describe('createWaiterAvailabilityDB', function () {
     });
     it('should clear all waiter names', async () => {
        
-        const waiterName = 'Zanele'; 
-        const selectedDays = ['Monday', 'Tuesday']; 
-        await createWaiterDB.insertWaiter(waiterName, selectedDays);
-    
+        const waitersToAdd = ['Ali', 'Bonoke', 'ncamisa'];
+        for (const waiter of waitersToAdd) {
+            await createWaiterDB.insertWaiter(waiter, ['Monday']);
+        }
     
         await createWaiterDB.clearWaiterNames();
     
         const waiterNames = await createWaiterDB.getAllWaiterAssignments();
         assert.isEmpty(waiterNames);
     });
+    
     
     after(async () => {
         await db.$pool.end();

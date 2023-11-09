@@ -8,71 +8,99 @@
 <div class="container">
   
   <h3>Select Available Days:</h3>
-    <h2>Welcome, {{waiterName}}</h2>
-{{!-- 
-{{#if selectedDays}}
-  <h3>Your Schedule:</h3>
-  <ul>
-    {{#each selectedDays}}
-      <li>{{this}}</li>
-    {{/each}}
-  </ul>
-{{/if}} --}}
+  <h2>Welcome, {{waiterName}}</h2>
+  
+  <form action="/waiter/{{waiterName}}" method="post">
 
-  <form action="/waiter/{{waiterName}}/update" method="post">
-   <div class="error-message">{{errorMessage}}
-      <script>
-                setTimeout(function () {
-                    document.querySelector(".error-message").remove();
-                }, 3000)
-            </script>
-   </div>
-  <div class="successMessage">{{successMessage}}
-      <script>
-                setTimeout(function () {
-                    document.querySelector(".successMessage").remove();
-                }, 3000)
-            </script>
-  </div>
+    <div class="error-message">{{errorMessage}}</div>
+    <div class="successMessage">{{successMessage}}</div>
+    
+    <!-- Define a hidden input field to store selectedDaysJson -->
+    <input type="hidden" id="selectedDaysInput" name="selectedDays" value="{{selectedDaysJson}}">
+
     <div>
-        <label class="day-label" for="day1">Monday</label>
+      <label class="day-label" for="day1">Monday</label>
+      <div>
         <input type="checkbox" id="day1" name="days" value="Monday" {{#if (inArray "Monday" selectedDays)}}checked{{/if}}>
+      </div>
     </div>
 
     <div>
-        <label class="day-label" for="day2">Tuesday</label>
-          <input type="checkbox" id="day2" name="days" value="Tuesday" {{#if (inArray "Tuesday" selectedDays)}}checked{{/if}}>
+      <label class="day-label" for="day2">Tuesday</label>
+      <div>
+        <input type="checkbox" id="day2" name="days" value="Tuesday" {{#if (inArray "Tuesday" selectedDays)}}checked{{/if}}>
+      </div>
     </div>
 
     <div>
-        <label class="day-label" for="day3">Wednesday</label>
-          <input type="checkbox" id="day3" name="days" value="Wednesday" {{#if (inArray "Wednesday" selectedDays)}}checked{{/if}}>
+      <label class="day-label" for="day3">Wednesday</label>
+      <div>
+        <input type="checkbox" id="day3" name="days" value="Wednesday" {{#if (inArray "Wednesday" selectedDays)}}checked{{/if}}>
+      </div>
     </div>
 
     <div>
-        <label class="day-label" for="day4">Thursday</label>
-          <input type="checkbox" id="day4" name="days" value="Thursday" {{#if (inArray "Thursday" selectedDays)}}checked{{/if}}>
+      <label class="day-label" for="day4">Thursday</label>
+      <div>
+        <input type="checkbox" id="day4" name="days" value="Thursday" {{#if (inArray "Thursday" selectedDays)}}checked{{/if}}>
+      </div>
     </div>
 
     <div>
-        <label class="day-label" for="day5">Friday</label>
-          <input type="checkbox" id="day5" name="days" value="Friday" {{#if (inArray "Friday" selectedDays)}}checked{{/if}}>
+      <label class="day-label" for="day5">Friday</label>
+      <div>
+        <input type="checkbox" id="day5" name="days" value="Friday" {{#if (inArray "Friday" selectedDays)}}checked{{/if}}>
+      </div>
     </div>
 
     <div>
-        <label class="day-label" for="day6">Saturday</label>
-          <input type="checkbox" id="day6" name="days" value="Saturday" {{#if (inArray "Saturday" selectedDays)}}checked{{/if}}>
+      <label class="day-label" for="day6">Saturday</label>
+      <div>
+        <input type="checkbox" id="day6" name="days" value="Saturday" {{#if (inArray "Saturday" selectedDays)}}checked{{/if}}>
+      </div>
     </div>
 
     <div>
-        <label class="day-label" for="day7">Sunday</label>
-          <input type="checkbox" id="day7" name="days" value="Sunday" {{#if (inArray "Sunday" selectedDays)}}checked{{/if}}>
+      <label class="day-label" for="day7">Sunday</label>
+      <div>
+        <input type="checkbox" id="day7" name="days" value="Sunday" {{#if (inArray "Sunday" selectedDays)}}checked{{/if}}>
+      </div>
     </div>
 
     <div>
-        <button type="submit">Submit Schedule</button>
+      <button type="submit">Submit Schedule</button>
     </div>
+  </form>
+<form>
+
 </form>
+  <!-- JavaScript code for managing checkboxes -->
+  
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const selectedDaysJson = document.querySelector("#selectedDaysInput").value;
+    const selectedDays = JSON.parse(selectedDaysJson);
+    
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", function () {
+        if (this.checked) {
+          selectedDays.push(this.value);
+        } else {
+          selectedDays.splice(selectedDays.indexOf(this.value), 1);
+        }
+
+        const updatedSelectedDaysJson = JSON.stringify(selectedDays);
+        document.querySelector("#selectedDaysInput").value = updatedSelectedDaysJson;
+      });
+
+      if (selectedDays.includes(checkbox.value)) {
+        checkbox.checked = true;
+      }
+    });
+  }
+  </script>
 </div>
+
 </body>
 </html>
