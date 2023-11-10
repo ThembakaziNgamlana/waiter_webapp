@@ -25,12 +25,19 @@ body{
     width: 80%;
     max-width: 600px;
     margin: 0 auto;
-  }
-  
-  .day-label {
-    font-size: 25px; /* Adjust the font size as needed */
+    margin-bottom: 10px;
   }
   
   h3{
     font-size: 30px;
+  }
+
+
+  .day-label {
+    margin-right: 10px;
+    font-size: 25px;
+  }
+
+  .day-container {
+    margin-bottom: 10px;
   }
