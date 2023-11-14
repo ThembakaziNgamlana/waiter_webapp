@@ -79,6 +79,8 @@ app.post('/waiter/:waiterName', waiters.selectDay);
 
 app.get('/days', waiters.admin);
 
+app.post('/days', waiters.admin);
+
 app.post('/days/reset-schedule', waiters.reset)
 
 const PORT = process.env.PORT || 3000;

@@ -58,8 +58,6 @@ export default function WaiterRoutes(createWaiterDB) {
       });
     }
   }
-  
-
   async function admin(req, res) {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     try {
@@ -109,6 +107,7 @@ export default function WaiterRoutes(createWaiterDB) {
     }
   }
 
+  
   async function reset(req, res) {
     try {
       await createWaiterDB.clearWaiterNames();
